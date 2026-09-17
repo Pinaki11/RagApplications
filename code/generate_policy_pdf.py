@@ -199,7 +199,7 @@ def company_block(name, tagline, policy_lines, styles):
 
 
 def build_company_documents():
-    # Create one independently readable PDF for each fictional insurance company.
+    # Create one independently readable, three-page PDF for each fictional insurer.
     styles = build_styles()
     for company_name, tagline, policy_lines in COMPANY_DOCUMENTS:
         output_path = f"doc/{company_name}.pdf"
@@ -221,14 +221,52 @@ def build_company_documents():
             paragraph("Health Insurance Policy Document", styles, "Subtitle"),
             company_block(company_name, tagline, policy_lines, styles),
             Spacer(1, 0.22 * inch),
-            paragraph("Policy governance", styles, "SectionTitle"),
+            paragraph("Policy overview", styles, "SectionTitle"),
             paragraph(
-                "Member information is protected and used only for permitted care, payment, operations, and legal purposes. "
-                "Members may request accessibility accommodations, a supervisor review, or an appeal of an adverse benefit decision. "
+                "This policy document summarizes the fictional plan's member-facing commitments, coverage administration, and service standards. "
+                "It is intended to help members understand how to access care, request support, and raise concerns. "
                 "Coverage remains subject to the applicable plan certificate, exclusions, authorization rules, and governing law.",
                 styles,
             ),
-            Spacer(1, 0.18 * inch),
+            PageBreak(),
+            paragraph("Coverage and access", styles, "SectionTitle"),
+            paragraph(
+                "Covered services must be medically necessary, provided by an eligible provider, and received under the member's plan terms. "
+                "Members should confirm network participation, referral requirements, cost sharing, and prior authorization before scheduled care. "
+                "Emergency services should be sought immediately; members should call local emergency services when a serious or life-threatening condition exists.",
+                styles,
+            ),
+            Spacer(1, 0.14 * inch),
+            paragraph("Care coordination", styles, "SectionTitle"),
+            paragraph(
+                "The plan may coordinate primary care, specialist care, pharmacy services, behavioral health, and post-treatment follow-up. "
+                "Members can request help locating an in-network provider, understanding a referral, arranging language assistance, or identifying accessible care. "
+                "Care coordination supports access but does not change the benefits or exclusions in the governing plan documents.",
+                styles,
+            ),
+            Spacer(1, 0.14 * inch),
+            paragraph("Utilization review", styles, "SectionTitle"),
+            paragraph(
+                "When prior authorization or clinical review is required, the plan communicates the information needed, the review timeframe, and the decision rationale. "
+                "Members may submit additional clinical records, ask questions about a decision, and use the reconsideration or appeal process described in their plan materials.",
+                styles,
+            ),
+            PageBreak(),
+            paragraph("Member services and governance", styles, "SectionTitle"),
+            paragraph(
+                "Member information is protected and used only for permitted care, payment, operations, and legal purposes. "
+                "Members may request accessibility accommodations, interpreter services, a supervisor review, or an appeal of an adverse benefit decision. "
+                "Complaints and directory corrections are logged, investigated, and answered within the applicable service standard.",
+                styles,
+            ),
+            Spacer(1, 0.16 * inch),
+            paragraph("How to raise a concern", styles, "SectionTitle"),
+            paragraph(
+                "A member may contact customer service, request a supervisor, submit a written grievance, or authorize another person to act on the member's behalf. "
+                "A written response identifies the issue reviewed, the decision, the relevant plan provision, and any available next step or external review right.",
+                styles,
+            ),
+            Spacer(1, 0.16 * inch),
             paragraph("Document control", styles, "SectionTitle"),
             paragraph(
                 "Version: 1.0 | Effective date: September 17, 2026 | Review cycle: Annual",
