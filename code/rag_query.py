@@ -79,7 +79,8 @@ def generate_answer(query, chunks, model=None, conversation=None):
             "content": (
                 "You answer questions about the supplied health insurance policy excerpts. "
                 "Use only the provided context. If the answer is not in the context, say so. "
-                "Cite supporting sources using the company name and page number. "
+                "Always state the page number where each key fact was found, using wording such as 'According to page 3'. "
+                "Include the company name when it helps distinguish policies. "
                 "These documents are fictional and should not be presented as real insurance advice."
             ),
         }

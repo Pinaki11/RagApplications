@@ -34,7 +34,6 @@ st.markdown(
         [data-testid='stChatMessage']:has([data-testid='chatAvatarIcon-user']) { background: var(--mint); border-color: #c8e2da; }
         [data-testid='stChatInput'] { border-top: 1px solid var(--line); padding-top: 1rem; }
         .stButton button { border-radius: 10px; border: 1px solid var(--line); color: var(--ink); }
-        .source-note { color: var(--muted); font-size: .77rem; padding-top: .5rem; }
     </style>
     """,
     unsafe_allow_html=True,
@@ -46,8 +45,7 @@ if "messages" not in st.session_state:
     st.session_state.messages = [
         {
             "role": "assistant",
-            "content": "Hi I am Alexa,How can I help you today?",
-            "sources": [],
+            "content": "Hi I am Inso, How can I help you today?",
         }
     ]
 
@@ -74,28 +72,23 @@ with st.sidebar:
     st.caption("Ask follow-up questions naturally. Each answer is grounded in the indexed policy pages.")
     if st.button("Start a new conversation", use_container_width=True):
         st.session_state.messages = [
-            {"role": "assistant", "content": "Hi I am Alexa,How can I help you today?", "sources": []}
+            {"role": "assistant", "content": "Hi I am Inso, how can I help you today?"}
         ]
         st.rerun()
     st.divider()
     st.caption("Answers are for demonstration and document-retrieval purposes. The policy PDFs are fictional.")
 
 
-# Render the conversation history, including compact source provenance on answers.
+# Render the conversation history; page references are included in the generated answer itself.
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
-        if message.get("sources"):
-            sources = ", ".join(
-                f"{source['company']} · p.{source['page']}" for source in message["sources"]
-            )
-            st.markdown(f'<div class="source-note">Sources: {sources}</div>', unsafe_allow_html=True)
 
 
 # Retrieve fresh policy context and pass the recent conversation to Azure OpenAI.
 query = st.chat_input("Ask about a policy, plan, or coverage term...")
 if query:
-    st.session_state.messages.append({"role": "user", "content": query, "sources": []})
+    st.session_state.messages.append({"role": "user", "content": query})
     with st.chat_message("user"):
         st.markdown(query)
     with st.chat_message("assistant"):
@@ -108,12 +101,7 @@ if query:
                 ]
                 result = answer_query(query, n_results=5, conversation=conversation)
                 answer = result["answer"]
-                sources = [chunk["metadata"] for chunk in result["chunks"]]
             except Exception as error:
                 answer = f"I could not complete that request: {error}"
-                sources = []
             st.markdown(answer)
-            if sources:
-                source_text = ", ".join(f"{source['company']} · p.{source['page']}" for source in sources)
-                st.markdown(f'<div class="source-note">Sources: {source_text}</div>', unsafe_allow_html=True)
-    st.session_state.messages.append({"role": "assistant", "content": answer, "sources": sources})
+    st.session_state.messages.append({"role": "assistant", "content": answer})
